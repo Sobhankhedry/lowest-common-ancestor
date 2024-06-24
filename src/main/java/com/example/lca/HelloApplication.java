@@ -1,6 +1,8 @@
 package com.example.lca;
 
 import Model.TreeNode;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -10,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -53,17 +56,21 @@ public class HelloApplication extends Application {
         TreeNode q12 = new TreeNode(75);
         q5.setLeft(q11);
         q5.setRight(q12);
-        TreeNode q13 = new TreeNode(36);
+        TreeNode q13 = new TreeNode(88);
         TreeNode q14 = new TreeNode(15);
         q6.setLeft(q13);
         q6.setRight(q14);
+        TreeNode q15 = new TreeNode(37);
+        TreeNode q16 = new TreeNode(91);
+        q13.setLeft(q15);
+        q13.setRight(q16);
 
 
         Group root = new Group();
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        TreeNode nod = LowestCommon(R,q14,q11);
+        TreeNode nod = LowestCommon(R,q16,q11);
         System.out.println(nod.getValue()+ " the real LCA");
 
 
@@ -82,12 +89,23 @@ public class HelloApplication extends Application {
     }
 
     private void ShowingPath(GraphicsContext gc, TreeNode R, Stage stage) {
-        for (int i = 0; i < pPath.size(); i++) {
-            pPath.get(i).setColor(2);
-            drawTree(gc, R,WIDTH/2,40,WIDTH/4, stage);
-        }
-    }
 
+
+            Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+                for (TreeNode b: pPath
+                     ) {
+                    b.setColor(2);
+                    drawTree(gc, R,WIDTH/2,40,WIDTH/4, stage);
+
+                }
+
+            }));
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.play();
+
+
+
+    }
 
 
 
@@ -111,7 +129,6 @@ public class HelloApplication extends Application {
         qPath.remove(0);
         Collections.reverse(qPath);
         qPath.remove(0);
-
 
 
     }
@@ -153,6 +170,7 @@ public class HelloApplication extends Application {
 
 
     private void ChangeColorNodeToRed(TreeNode root,TreeNode x) {
+
         if (root == null){
             return;
         }if (root.getValue() == x.getValue()){
