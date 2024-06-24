@@ -8,8 +8,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -76,7 +74,7 @@ public class HelloApplication extends Application {
 
         drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4,stage);
 
-        ShowingPath(gc , R, stage);
+        ShowingPath(gc , R, stage,nod);
 
 
         root.getChildren().add(canvas);
@@ -88,14 +86,33 @@ public class HelloApplication extends Application {
 
     }
 
-    private void ShowingPath(GraphicsContext gc, TreeNode R, Stage stage) {
-            final int[] counter={0};
+    private void ShowingPath(GraphicsContext gc, TreeNode R, Stage stage, TreeNode nod) {
+            final int[] counterp={0};
+            final int[] counterq={0};
 
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
-                pPath.get(counter[0]).setColor(2);
-                drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4,stage);
-                counter[0]++;
-            }));
+                if(pPath.get(counterp[0]).getValue()== nod.getValue()){
+                    pPath.get((counterp[0])).setColor(5);
+                    drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4,stage);
+                }else {
+                    pPath.get(counterp[0]).setColor(2);
+                    drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4,stage);
+                    counterp[0]++;
+                }
+            }),
+                    new KeyFrame(Duration.seconds(2), event ->{
+                        if (qPath.get(counterq[0]).getValue() == nod.getValue()){
+                            qPath.get((counterq[0])).setColor(5);
+                            drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4,stage);
+                        }
+                        else {
+                            qPath.get(counterq[0]).setColor(2);
+                            drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4,stage);
+                            counterq[0]++;
+                        }
+                    } ));
+
+
             timeline.setCycleCount(Timeline.INDEFINITE);
             timeline.play();
 
@@ -116,13 +133,13 @@ public class HelloApplication extends Application {
             }
         }
 
-        pPath.remove(0);
+        //pPath.remove(0);
         Collections.reverse(pPath);
         pPath.remove(0);
 
 
 
-        qPath.remove(0);
+        //qPath.remove(0);
         Collections.reverse(qPath);
         qPath.remove(0);
 
@@ -136,7 +153,7 @@ public class HelloApplication extends Application {
         TreeNode lca = LCA(root , p , q);
         commonPath(lca,p,q);
 
-        lca.setColor(5);
+        //lca.setColor(5);
         return lca;
     }
 
