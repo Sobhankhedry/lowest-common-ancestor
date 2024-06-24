@@ -89,16 +89,12 @@ public class HelloApplication extends Application {
     }
 
     private void ShowingPath(GraphicsContext gc, TreeNode R, Stage stage) {
-
+            final int[] counter={0};
 
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
-                for (TreeNode b: pPath
-                     ) {
-                    b.setColor(2);
-                    drawTree(gc, R,WIDTH/2,40,WIDTH/4, stage);
-
-                }
-
+                pPath.get(counter[0]).setColor(2);
+                drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4,stage);
+                counter[0]++;
             }));
             timeline.setCycleCount(Timeline.INDEFINITE);
             timeline.play();
