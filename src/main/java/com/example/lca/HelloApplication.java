@@ -6,11 +6,14 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HelloApplication extends Application {
@@ -19,6 +22,8 @@ public class HelloApplication extends Application {
     private static final int NODE_RADIUS = 20;
     private static final int VERTICAL_SPACE = 50;
 
+    static List<TreeNode> pPath = new ArrayList<>();
+    static List<TreeNode> qPath = new ArrayList<>();
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -62,27 +67,33 @@ public class HelloApplication extends Application {
         System.out.println(nod.getValue()+ " the real LCA");
 
 
+        drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4,stage);
 
-
-
-        drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4);
+        ShowingPath(gc , R, stage);
 
 
         root.getChildren().add(canvas);
         stage.setTitle("LCA");
         stage.setScene(new Scene(root));
         stage.show();
+
+
+
     }
 
-    private void commonPath(TreeNode nod, TreeNode p, TreeNode q) {
-        List<TreeNode> pPath = new ArrayList<>();
-        List<TreeNode> qPath = new ArrayList<>();
+    private void ShowingPath(GraphicsContext gc, TreeNode R, Stage stage) {
+        for (int i = 0; i < pPath.size(); i++) {
+            pPath.get(i).setColor(2);
+            drawTree(gc, R,WIDTH/2,40,WIDTH/4, stage);
+        }
+    }
 
+
+
+
+    private void commonPath(TreeNode nod, TreeNode p, TreeNode q) {
         findPath(nod,p,pPath);
         findPath(nod,q,qPath);
-
-        int n = pPath.size();
-        int m = qPath.size();
 
         int i;
         for (i = 0; i < pPath.size() && i < qPath.size(); i++) {
@@ -91,19 +102,28 @@ public class HelloApplication extends Application {
             }
         }
 
+        pPath.remove(0);
+        Collections.reverse(pPath);
+        pPath.remove(0);
+
+
+
+        qPath.remove(0);
+        Collections.reverse(qPath);
+        qPath.remove(0);
 
 
 
     }
 
     private TreeNode LowestCommon(TreeNode root, TreeNode p, TreeNode q) {
-        ChangeColorNode(root,p);
-        ChangeColorNode(root,q);
+        ChangeColorNodeToRed(root,p);
+        ChangeColorNodeToRed(root,q);
 
         TreeNode lca = LCA(root , p , q);
         commonPath(lca,p,q);
 
-        lca.setColor(10);
+        lca.setColor(5);
         return lca;
     }
 
@@ -130,25 +150,17 @@ public class HelloApplication extends Application {
         return false;
     }
 
-    private void colorPath(List<TreeNode> path, TreeNode lca) {
-        for (TreeNode node : path) {
-            node.setColor(5); // Color nodes in the path
-            if (node.equals(lca)) {
-                break;
-            }
-        }
-    }
 
-    private void ChangeColorNode(TreeNode root,TreeNode x) {
+
+    private void ChangeColorNodeToRed(TreeNode root,TreeNode x) {
         if (root == null){
             return;
         }if (root.getValue() == x.getValue()){
-            root.setColor(5);
-            System.out.println("color "+ root.getColor() +" in node with value "+ root.getValue());
+            root.setColor(1);
             return;
         }
-        ChangeColorNode(root.getLeft(),x);
-        ChangeColorNode(root.getRight(),x);
+        ChangeColorNodeToRed(root.getLeft(),x);
+        ChangeColorNodeToRed(root.getRight(),x);
     }
 
     private TreeNode LCA(TreeNode root, TreeNode p, TreeNode q) {
@@ -171,15 +183,18 @@ public class HelloApplication extends Application {
 
 
 
-    private void drawTree(GraphicsContext gc, TreeNode node, double x, double y, double hGap) {
+    private void drawTree(GraphicsContext gc, TreeNode node, double x, double y, double hGap, Stage stage) {
+
         if (node != null) {
-            if (node.getColor()==5){
+            if (node.getColor()==1){
                 gc.setFill(Color.RED);
             }
-            else if(node.getColor()==10){
+            else if(node.getColor()==5){
                 gc.setFill(Color.GREEN);
-            }
-            else {
+            } else if (node.getColor() == 2) {
+                gc.setFill(Color.OLIVE);
+
+            } else {
                 gc.setFill(Color.BLACK);
 
             }
@@ -189,11 +204,11 @@ public class HelloApplication extends Application {
 
             if (node.getLeft() != null) {
                 gc.strokeLine(x, y, x - hGap, y + VERTICAL_SPACE);
-                drawTree(gc, node.getLeft(), x - hGap, y + VERTICAL_SPACE, hGap / 2);
+                drawTree(gc, node.getLeft(), x - hGap, y + VERTICAL_SPACE, hGap / 2, stage);
             }
             if (node.getRight() != null) {
                 gc.strokeLine(x, y, x + hGap, y + VERTICAL_SPACE);
-                drawTree(gc, node.getRight(), x + hGap, y + VERTICAL_SPACE, hGap / 2);
+                drawTree(gc, node.getRight(), x + hGap, y + VERTICAL_SPACE, hGap / 2, stage);
             }
         }
     }
