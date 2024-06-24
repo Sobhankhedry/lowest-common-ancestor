@@ -10,6 +10,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class HelloApplication extends Application {
     private static final int WIDTH = 800;
@@ -34,16 +36,30 @@ public class HelloApplication extends Application {
         TreeNode q6 = new TreeNode(10);
         q2.setLeft(q5);
         q2.setRight(q6);
-
-
-
+        TreeNode q7 = new TreeNode(3);
+        TreeNode q8 = new TreeNode(9);
+        q3.setLeft(q7);
+        q3.setRight(q8);
+        TreeNode q9 = new TreeNode(23);
+        TreeNode q10 = new TreeNode(31);
+        q4.setLeft(q9);
+        q4.setRight(q10);
+        TreeNode q11 = new TreeNode(17);
+        TreeNode q12 = new TreeNode(75);
+        q5.setLeft(q11);
+        q5.setRight(q12);
+        TreeNode q13 = new TreeNode(36);
+        TreeNode q14 = new TreeNode(15);
+        q6.setLeft(q13);
+        q6.setRight(q14);
 
 
         Group root = new Group();
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        TreeNode nod = LowestCommon(R,q2,q5);
+        TreeNode nod = LowestCommon(R,q13,q8);
+        System.out.println(nod.getValue()+ " the real LCA");
 
         drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4);
 
@@ -56,10 +72,61 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
-    private TreeNode LowestCommon(TreeNode root, TreeNode q2, TreeNode q5) {
-        ChangeColorNode(root,q2);
-        ChangeColorNode(root,q5);
-        return LCA(root,q2,q5);
+    private TreeNode LowestCommon(TreeNode root, TreeNode p, TreeNode q) {
+        ChangeColorNode(root,p);
+        ChangeColorNode(root,q);
+
+        List<TreeNode> pPath = new ArrayList<>();
+        List<TreeNode> qPath = new ArrayList<>();
+
+        findPath(root,p,pPath);
+        findPath(root,q,qPath);
+
+        int n = pPath.size();
+        int m = qPath.size();
+
+        for (int i = 0; i < n ; i++) {
+            for (int j=0;j<m;j++){
+                if(!pPath.get(i).equals(qPath.get(j))){
+                    break;
+                }
+            }
+
+        }
+
+        return LCA(root,p,q);
+    }
+
+    private boolean findPath(TreeNode root, TreeNode target, List<TreeNode> path) {
+        if (root == null) {
+            return false;
+        }
+
+        path.add(root);
+
+        if (root.equals(target)) {
+            return true;
+        }
+
+        if (root.getLeft() != null && findPath(root.getLeft(), target, path)) {
+            return true;
+        }
+
+        if (root.getRight() != null && findPath(root.getRight(), target, path)) {
+            return true;
+        }
+
+        path.remove(path.size() - 1);
+        return false;
+    }
+
+    private void colorPath(List<TreeNode> path, TreeNode lca) {
+        for (TreeNode node : path) {
+            node.setColor(5); // Color nodes in the path
+            if (node.equals(lca)) {
+                break;
+            }
+        }
     }
 
     private void ChangeColorNode(TreeNode root,TreeNode x) {
