@@ -58,12 +58,14 @@ public class HelloApplication extends Application {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        TreeNode nod = LowestCommon(R,q13,q8);
+        TreeNode nod = LowestCommon(R,q14,q11);
         System.out.println(nod.getValue()+ " the real LCA");
 
+
+
+
+
         drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4);
-
-
 
 
         root.getChildren().add(canvas);
@@ -72,29 +74,37 @@ public class HelloApplication extends Application {
         stage.show();
     }
 
-    private TreeNode LowestCommon(TreeNode root, TreeNode p, TreeNode q) {
-        ChangeColorNode(root,p);
-        ChangeColorNode(root,q);
-
+    private void commonPath(TreeNode nod, TreeNode p, TreeNode q) {
         List<TreeNode> pPath = new ArrayList<>();
         List<TreeNode> qPath = new ArrayList<>();
 
-        findPath(root,p,pPath);
-        findPath(root,q,qPath);
+        findPath(nod,p,pPath);
+        findPath(nod,q,qPath);
 
         int n = pPath.size();
         int m = qPath.size();
 
-        for (int i = 0; i < n ; i++) {
-            for (int j=0;j<m;j++){
-                if(!pPath.get(i).equals(qPath.get(j))){
-                    break;
-                }
+        int i;
+        for (i = 0; i < pPath.size() && i < qPath.size(); i++) {
+            if (!pPath.get(i).equals(qPath.get(i))) {
+                break;
             }
-
         }
 
-        return LCA(root,p,q);
+
+
+
+    }
+
+    private TreeNode LowestCommon(TreeNode root, TreeNode p, TreeNode q) {
+        ChangeColorNode(root,p);
+        ChangeColorNode(root,q);
+
+        TreeNode lca = LCA(root , p , q);
+        commonPath(lca,p,q);
+
+        lca.setColor(10);
+        return lca;
     }
 
     private boolean findPath(TreeNode root, TreeNode target, List<TreeNode> path) {
@@ -165,6 +175,9 @@ public class HelloApplication extends Application {
         if (node != null) {
             if (node.getColor()==5){
                 gc.setFill(Color.RED);
+            }
+            else if(node.getColor()==10){
+                gc.setFill(Color.GREEN);
             }
             else {
                 gc.setFill(Color.BLACK);
