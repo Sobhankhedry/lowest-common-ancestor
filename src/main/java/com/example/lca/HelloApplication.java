@@ -68,7 +68,7 @@ public class HelloApplication extends Application {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        TreeNode nod = LowestCommon(R,q16,q11);
+        TreeNode nod = LowestCommon(R,q2,q16);
         System.out.println(nod.getValue()+ " the real LCA");
 
 
