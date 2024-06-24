@@ -43,11 +43,11 @@ public class HelloApplication extends Application {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-
+        TreeNode nod = LowestCommon(R,q2,q5);
 
         drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4);
 
-        TreeNode nod = LowestCommon(R,q2,q5);
+
 
 
         root.getChildren().add(canvas);
@@ -66,14 +66,12 @@ public class HelloApplication extends Application {
         if (root == null){
             return;
         }if (root.getValue() == x.getValue()){
-            System.out.println(root.getValue());
-            root.setColor(-1);
+            root.setColor(5);
+            System.out.println("color "+ root.getColor() +" in node with value "+ root.getValue());
             return;
         }
-
         ChangeColorNode(root.getLeft(),x);
         ChangeColorNode(root.getRight(),x);
-
     }
 
     private TreeNode LCA(TreeNode root, TreeNode p, TreeNode q) {
@@ -98,12 +96,12 @@ public class HelloApplication extends Application {
 
     private void drawTree(GraphicsContext gc, TreeNode node, double x, double y, double hGap) {
         if (node != null) {
-            if (node.getColor()==-1){
-                gc.setFill(Color.YELLOW);
-                System.out.println("im here ");
+            if (node.getColor()==5){
+                gc.setFill(Color.RED);
             }
             else {
                 gc.setFill(Color.BLACK);
+
             }
             gc.fillOval(x - NODE_RADIUS, y - NODE_RADIUS, 2 * NODE_RADIUS, 2 * NODE_RADIUS);
             gc.setFill(Color.WHITE);
