@@ -25,7 +25,7 @@ public class HelloApplication extends Application {
 
     static List<TreeNode> pPath = new ArrayList<>();
     static List<TreeNode> qPath = new ArrayList<>();
-
+    static List<TreeNode> rPath = new ArrayList<>();
     @Override
     public void start(Stage stage) throws IOException {
 
@@ -68,7 +68,7 @@ public class HelloApplication extends Application {
         Canvas canvas = new Canvas(WIDTH, HEIGHT);
         GraphicsContext gc = canvas.getGraphicsContext2D();
 
-        TreeNode nod = LowestCommon(R,q2,q16);
+        TreeNode nod = LowestCommon(R,q15,q16);
         System.out.println(nod.getValue()+ " the real LCA");
 
 
@@ -89,6 +89,7 @@ public class HelloApplication extends Application {
     private void ShowingPath(GraphicsContext gc, TreeNode R, Stage stage, TreeNode nod) {
             final int[] counterp={0};
             final int[] counterq={0};
+            final int[] counterr={0};
 
             Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
                 if(pPath.get(counterp[0]).getValue()== nod.getValue()){
@@ -110,7 +111,14 @@ public class HelloApplication extends Application {
                             drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4,stage);
                             counterq[0]++;
                         }
-                    } ));
+                    } ),
+                    new KeyFrame(Duration.seconds(2), event -> {
+                        System.out.println("hreeeee");
+
+                        rPath.get(counterr[0]).setColor(3);
+                        //drawTree(gc, R, WIDTH / 2, 40, WIDTH / 4,stage);
+                        counterr[0]++;
+                    }));
 
 
             timeline.setCycleCount(Timeline.INDEFINITE);
@@ -122,26 +130,27 @@ public class HelloApplication extends Application {
 
 
 
-    private void commonPath(TreeNode nod, TreeNode p, TreeNode q) {
+    private void PathToLCA(TreeNode nod, TreeNode p, TreeNode q, TreeNode root) {
         findPath(nod,p,pPath);
         findPath(nod,q,qPath);
+        findPath(root,nod,rPath);
 
-        int i;
-        for (i = 0; i < pPath.size() && i < qPath.size(); i++) {
-            if (!pPath.get(i).equals(qPath.get(i))) {
-                break;
-            }
-        }
 
-        //pPath.remove(0);
+
         Collections.reverse(pPath);
         pPath.remove(0);
 
 
-
-        //qPath.remove(0);
         Collections.reverse(qPath);
         qPath.remove(0);
+
+        Collections.reverse(rPath);
+        if (rPath.size()!=0){
+            rPath.remove(0);
+        }
+        for (int i = 0; i < rPath.size(); i++) {
+            System.out.println(rPath.get(i).getValue() + " ");
+        }
 
 
     }
@@ -151,9 +160,9 @@ public class HelloApplication extends Application {
         ChangeColorNodeToRed(root,q);
 
         TreeNode lca = LCA(root , p , q);
-        commonPath(lca,p,q);
+        PathToLCA(lca,p,q,root);
 
-        //lca.setColor(5);
+
         return lca;
     }
 
@@ -225,6 +234,8 @@ public class HelloApplication extends Application {
             } else if (node.getColor() == 2) {
                 gc.setFill(Color.OLIVE);
 
+            } else if (node.getColor()==3) {
+                gc.setFill(Color.GREY);
             } else {
                 gc.setFill(Color.BLACK);
 
