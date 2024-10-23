@@ -59,6 +59,7 @@ The LCA algorithm works as follows:
 ## Contributing
 
 Contributions are always welcome!
+
 If you have suggestions, improvements, or want to report issues, feel free to open a pull request or issue.
 
 
