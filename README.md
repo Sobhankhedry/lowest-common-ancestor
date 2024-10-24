@@ -1,5 +1,23 @@
 # Lowest Common Ancestor with JavaFX
 
+## Algorithm Explanation
+
+
+The LCA algorithm works as follows:
+
+**Recursive Approach:** Given a binary tree and two nodes, the algorithm traverses from the root to find the first node that is an ancestor of both nodes.
+
+## Example
+
+
+https://github.com/user-attachments/assets/278496d1-a32d-4f09-91c6-44bf6e29578d
+
+**Red nodes:** the two node that are selected to find their LCA.
+**Yellow nodes:** the path that the both nodes go through.
+**Gray nodes:** the higher common parrents.
+**Green node:** the LCA of the two selected nodes.
+
+
 ## Project Description
 
 This project implements the Lowest Common Ancestor (LCA) algorithm using JavaFX for visual representation. The LCA is a fundamental concept in tree-based data structures, where the LCA of two nodes in a tree is the lowest (or deepest) node that has both nodes as descendants. This project provides an intuitive way to explore and visualize this concept.
@@ -49,19 +67,12 @@ bash
 - You can add, remove, or modify nodes to explore different scenarios and test the LCA algorithm.
 - All the possible situations have been considered and done.
 
-## Algorithm Explanation
-
-
-The LCA algorithm works as follows:
-
-**Recursive Approach:** Given a binary tree and two nodes, the algorithm traverses from the root to find the first node that is an ancestor of both nodes.
 
 ## Contributing
 
 Contributions are always welcome!
 
 If you have suggestions, improvements, or want to report issues, feel free to open a pull request or issue.
-
 
 
    
