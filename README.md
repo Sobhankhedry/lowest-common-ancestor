@@ -13,8 +13,11 @@ The LCA algorithm works as follows:
 https://github.com/user-attachments/assets/278496d1-a32d-4f09-91c6-44bf6e29578d
 
 **Red nodes:** the two node that are selected to find their LCA.
+
 **Yellow nodes:** the path that the both nodes go through.
+
 **Gray nodes:** the higher common parrents.
+
 **Green node:** the LCA of the two selected nodes.
 
 
